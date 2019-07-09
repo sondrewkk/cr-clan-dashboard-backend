@@ -1,16 +1,25 @@
 const express = require('express');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
-
 const app = express();
+const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 
-app.use(logger('dev'));
-app.use(bodyParser.urlencoded({extended: false}));
+// Import routes
+const authRoutes = require('./routes/auth');
 
-app.get('/', function(req, res){
-    res.json({"hello" : "world"});
-});
+dotenv.config();
 
-app.listen(3000, function() {
-    console.log('Node server listening on port 3000');
-});
+// Connect to db
+mongoose.connect(
+    process.env.DB_CONNECT,
+    { useNewUrlParser: true },
+    () => console.log('Connected to db')
+);
+
+// Middleware
+app.use(express.json());
+
+// Route middleware
+app.use('/api/user', authRoutes);
+
+
+app.listen(3000, () => console.log('Server up and running on port 3000'));
