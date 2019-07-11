@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const api = require('./api');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
