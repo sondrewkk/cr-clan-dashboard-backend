@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint",
-    "start": "nodemon server.js"
+    "lint": "eslint **/*.js",
+    "start": "npm run lint & nodemon server.js"
   },
   "repository": {
     "type": "git",
