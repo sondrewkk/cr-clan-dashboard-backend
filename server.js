@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const api = require('./api');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
@@ -15,6 +14,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(morgan('dev'));
 
+// API
+const userEndpoints = require('./api/routes/user');
+
+app.use('/api/user', userEndpoints);
+
 // 404 handling
 app.use(function(req, res, next) {
   const err = new Error('Not Found');
@@ -22,12 +26,8 @@ app.use(function(req, res, next) {
   res.json(err);
 });
 
-// API
-app.use('/api', api);
-app.use(express.static('static'));
-
 // Connect to db
-mongoose.connect(process.env.DB_CONNECT);
+mongoose.connect(process.env.DB_CONNECT, {useNewUrlParser: true});
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));

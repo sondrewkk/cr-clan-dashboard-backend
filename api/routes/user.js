@@ -1,10 +1,9 @@
 // eslint-disable-next-line new-cap
 const router = require('express').Router();
-const User = require('../model/user');
+const User = require('../../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const {registerValidation, loginValidation} = require('../validation');
-
+const {registerValidation, loginValidation} = require('../../validation');
 
 router.post('/register', async (req, res) => {
   const {error} = registerValidation(req.body);
@@ -56,6 +55,10 @@ router.post('/login', async (req, res) => {
 
   const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
   res.header('auth-token', token).send(token);
+});
+
+router.get('/test', function(req, res) {
+  res.send({hello: 'world'});
 });
 
 module.exports = router;
