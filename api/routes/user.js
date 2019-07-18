@@ -4,6 +4,7 @@ const User = require('../../models/user');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const {registerValidation, loginValidation} = require('../../validation');
+const verifyToken = require('../../middleware/verifyToken');
 
 router.post('/register', async (req, res) => {
   const {error} = registerValidation(req.body);
@@ -54,11 +55,15 @@ router.post('/login', async (req, res) => {
   }
 
   const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-  res.header('auth-token', token).send(token);
+  res.json({
+    success: true,
+    massage: 'Authorization successful',
+    token: token,
+  });
 });
 
-router.get('/test', function(req, res) {
-  res.send({hello: 'world'});
+router.get('/test', verifyToken, function(req, res) {
+  res.send({message: 'token verified'});
 });
 
 module.exports = router;
