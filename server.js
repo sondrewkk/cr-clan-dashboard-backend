@@ -4,12 +4,18 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // Configuration
 app.set('port', (process.env.PORT || 8081));
 dotenv.config();
 
 // Middleware
+app.use(cors({
+  origin: 'http://localhost:8080',
+  credentials: true,
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(morgan('dev'));
