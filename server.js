@@ -22,8 +22,10 @@ app.use(morgan('dev'));
 
 // API
 const userEndpoints = require('./api/routes/user');
+const playerEndpoints = require('./api/routes/player');
 
 app.use('/api/user', userEndpoints);
+app.use('/api/player', playerEndpoints);
 
 // 404 handling
 app.use(function(req, res, next) {
