@@ -16,9 +16,9 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(bodyParser.json());
+app.use(morgan('dev')); 
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(morgan('dev'));
+app.use(bodyParser.json());
 
 // API
 const userEndpoints = require('./api/routes/user');
@@ -41,8 +41,11 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
-
+  
   app.listen(app.get('port'), () => {
     console.log(`API Server Listening on port ${app.get('port')}`);
   });
 });
+
+// todo: lage en mongoose model for user/bruker. Lage endpoints rundt user. 
+//       sjekke om han har verifisert tag etc
