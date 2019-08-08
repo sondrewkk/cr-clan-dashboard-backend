@@ -58,6 +58,7 @@ router.post('/login', async (req, res) => {
   res.json({
     success: true,
     massage: 'Authorization successful',
+    isVerified: user.verified,
     token: token,
   });
 });
