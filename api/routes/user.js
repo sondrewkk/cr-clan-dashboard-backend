@@ -60,7 +60,31 @@ router.post('/login', async (req, res) => {
     massage: 'Authorization successful',
     isVerified: user.verified,
     token: token,
+    userId: user._id,
   });
+});
+
+router.post('/verify', verifyToken, async (req, res) => {
+  const id = req.body.id;
+
+  if (id) {   
+    try {
+      const user = await User.findOne({_id: id});
+      
+      if (user) {
+        user.verified = true;
+        await user.save();
+        res.json({
+          id: user._id,
+          verified: user.verified,
+        });
+      }
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  } else {
+    res.status(401).send('Invalid user id');
+  }
 });
 
 module.exports = router;
