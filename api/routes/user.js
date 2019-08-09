@@ -63,8 +63,4 @@ router.post('/login', async (req, res) => {
   });
 });
 
-router.get('/test', verifyToken, function(req, res) {
-  res.send({message: 'token verified'});
-});
-
 module.exports = router;
