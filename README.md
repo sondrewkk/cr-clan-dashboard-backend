@@ -105,6 +105,8 @@
   ### Response
   ```json
   {
+    "success": "true",
+    "message": "Verified",
     "id": "5d4ca07b9a19b52ed0afbbc5",
     "verified": "true"
   }

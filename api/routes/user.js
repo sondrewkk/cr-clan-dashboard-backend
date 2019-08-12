@@ -75,6 +75,8 @@ router.post('/verify', verifyToken, async (req, res) => {
         user.verified = true;
         await user.save();
         res.json({
+          success: true,
+          message: 'Verified',
           id: user._id,
           verified: user.verified,
         });
