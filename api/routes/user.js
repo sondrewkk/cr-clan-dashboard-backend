@@ -1,6 +1,7 @@
 // eslint-disable-next-line new-cap
 const router = require('express').Router();
 const User = require('../../models/user');
+const Player = require('../../models/player');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const {registerValidation, loginValidation} = require('../../validation');
@@ -61,6 +62,7 @@ router.post('/login', async (req, res) => {
     isVerified: user.verified,
     token: token,
     userId: user._id,
+    playerProfile: user.playerProfile,
   });
 });
 
@@ -71,16 +73,24 @@ router.post('/verify', verifyToken, async (req, res) => {
     try {
       const user = await User.findOne({_id: id});
       
-      if (user) {
-        user.verified = true;
+
+      if (!user.verified) {
+        const newPlayer = new Player(req.body.playerProfile);
+        await newPlayer.save();
+
+        // Can this be a candidate for a virtual property? 
+        // It`s based on playerProfile having data or not (null)
+        user.verified = true; 
+        user.playerProfile = newPlayer;
         await user.save();
-        res.json({
-          success: true,
-          message: 'Verified',
-          id: user._id,
-          verified: user.verified,
-        });
       }
+
+      res.json({
+        success: true,
+        message: 'Verified',
+        id: user._id,
+        verified: user.verified,
+      });  
     } catch (err) {
       res.status(500).send(err.message);
     }
