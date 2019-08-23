@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -30,6 +31,11 @@ const userSchema = new mongoose.Schema({
   verified: {
     type: Boolean,
     default: false,
+  },
+  playerProfile: {
+    type: ObjectId,
+    ref: 'PlayerProfile', 
+    default: null, 
   },
 });
 
