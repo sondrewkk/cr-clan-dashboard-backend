@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const _ = require('lodash');
 
 // Configuration
 app.set('port', (process.env.PORT || 8081));
@@ -19,6 +20,12 @@ app.use(cors({
 app.use(morgan('dev')); 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+  if (!_.isEmpty(req.body)) {
+    console.log(req.body);
+  }  
+  next();
+});
 
 // API
 const userEndpoints = require('./api/routes/user');
