@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
   },
   playerProfile: {
     type: ObjectId,
-    ref: 'PlayerProfile', 
+    ref: 'Player', 
     default: null, 
   },
 });
