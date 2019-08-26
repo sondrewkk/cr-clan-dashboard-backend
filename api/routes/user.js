@@ -45,7 +45,9 @@ router.post('/login', async (req, res) => {
     return res.status(400).send(error.details[0].message);
   }
 
-  const user = await User.findOne({email: req.body.email}).populate('playerProfile');
+  const user = 
+    await User.findOne({email: req.body.email}).populate('playerProfile');
+    
   if (!user) {
     return res.status(400).send('Email is not found');
   }
