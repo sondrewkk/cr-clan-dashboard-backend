@@ -53,6 +53,3 @@ db.once('open', () => {
     console.log(`API Server Listening on port ${app.get('port')}`);
   });
 });
-
-// todo: lage en mongoose model for user/bruker. Lage endpoints rundt user. 
-//       sjekke om han har verifisert tag etc
