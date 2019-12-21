@@ -8,8 +8,9 @@ const cors = require('cors');
 const _ = require('lodash');
 
 // Configuration
-app.set('port', (process.env.PORT || 8081));
 dotenv.config();
+app.set('port', (process.env.PORT || 8081));
+
 
 // Middleware
 app.use(cors({
