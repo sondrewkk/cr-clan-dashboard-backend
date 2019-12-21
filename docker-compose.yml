@@ -1,0 +1,19 @@
+version: '3'
+services:
+  api:
+    build: .
+    container_name: "cr-clan-dashboard-backend"
+    ports:
+      - 8081:8081
+    links:
+        - mongodb
+    depends_on: 
+        - mongodb
+    
+  mongodb:
+    image: mongo:latest
+    container_name: "mongo-container"
+    volumes: 
+        - ./mongo-volume:/data/db
+    ports:
+        - 27017:27017
