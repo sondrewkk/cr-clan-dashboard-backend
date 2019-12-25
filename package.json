@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint \"**/*.js\"",
-    "dev": "npm run lint & nodemon server.js",
+    "dev": "nodemon -r dotenv/config server.js",
     "start": "node server.js"
   },
   "repository": {
