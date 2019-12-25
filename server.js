@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const dotenv = require('dotenv');
+//const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -8,7 +8,7 @@ const cors = require('cors');
 const _ = require('lodash');
 
 // Configuration
-dotenv.config();
+//dotenv.config();
 app.set('port', (process.env.PORT || 8081));
 
 
