@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const playerSchema = new mongoose.Schema({
   tag: { type: String },
   name: { type: String },
-  thropies: { type: Number },
+  trophies: { type: Number },
   arena: 
   {
     id: { type: Number },
@@ -18,14 +18,7 @@ const playerSchema = new mongoose.Schema({
     role: { type: String },
     donations: { type: Number },
     donationsReceived: { type: Number },
-    donationsDelta: { type: Number },
-    badge: 
-    {
-      id: { type: Number },
-      name: { type: String },
-      category: { type: String },
-      image: { type: String }
-    }
+    donationsDelta: { type: Number }
   },
   stats: 
   {
@@ -70,7 +63,10 @@ const playerSchema = new mongoose.Schema({
       trophies: { type: Number }
     }
   },
-  deckLink: { type: String }
+  deckLink: { type: String },
+  _cacheTime: { type: Number },
+  created: { type: Date , immutable: true },
+  modified: { type: Date }
 });
 
 module.exports = mongoose.model('Player', playerSchema);
