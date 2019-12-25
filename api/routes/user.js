@@ -68,22 +68,21 @@ router.post('/login', async (req, res) => {
   });
 });
 
-router.post('/verify', verifyToken, async (req, res) => {
+router.post('/verify', verifyToken, async (req, res) => { // LL2Y89V9
   const id = req.body.id;
 
   if (id) {   
     try {
       const user = await User.findOne({_id: id});
       
-
       if (!user.verified) {
-        const newPlayer = new Player(req.body.playerProfile);
-        await newPlayer.save();
+        const player = await Player.findOne({ tag: req.body.tag})
 
         // Can this be a candidate for a virtual property? 
         // It`s based on playerProfile having data or not (null)
         user.verified = true; 
-        user.playerProfile = newPlayer;
+        user.playerProfile = player._id;
+        
         await user.save();
       }
 
