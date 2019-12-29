@@ -5,6 +5,24 @@ const Clan = require('../../models/clan');
 const ClanMember = require('../../models/clanMember');
 const {createClanValidation} = require('../../validation');
 
+router.get('/:tag', verifyToken, async (req, res) => {
+  const tag = req.params.tag;
+
+  try {
+    const clan = await Clan.findOne({ tag: tag }).populate('members');
+
+    if(clan) {
+      res.send(clan)
+    } 
+    else {
+      res.send("Clan is not registered. A leader need to register the clan to start managing it.")
+    }
+    
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 router.post('/register', verifyToken, async (req, res) => {
   try {
     // Validate request body, return error message if validation fails
@@ -23,7 +41,7 @@ router.post('/register', verifyToken, async (req, res) => {
     } 
     else {
 
-      // Fetch clan data, put members in a separate obect to pass
+      // Fetch clan data, put members in a separate object to pass
       // mongoose validation
       const newClanData = await client.Clans.getData(req.body.tag);
       const newClanMembers = newClanData.members;
@@ -35,14 +53,15 @@ router.post('/register', verifyToken, async (req, res) => {
 
       // For each member create a clan member and save it to database
       // before adding the member to the clan
-      await newClanMembers.forEach(async memberData => {
-        const member = new ClanMember(memberData);   
+      for(memberData in newClanMembers)
+      {
+        const member = new ClanMember(newClanMembers[memberData]);   
         member.clanTag = newClan.tag;
 
         await member.save();
         
         newClan.members.push(member._id);
-      });
+      }
 
       // Save clan with members
       await newClan.save();
