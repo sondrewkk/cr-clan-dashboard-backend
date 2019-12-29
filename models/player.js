@@ -65,8 +65,8 @@ const playerSchema = new mongoose.Schema({
   },
   deckLink: { type: String },
   _cacheTime: { type: Number },
-  created: { type: Date , immutable: true },
-  modified: { type: Date }
+  createdAt: { type: Date , default: Date.now, immutable: true },
+  modified: { type: Date },
 });
 
 module.exports = mongoose.model('Player', playerSchema);

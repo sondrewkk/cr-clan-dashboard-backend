@@ -24,9 +24,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
-  createdOn: {
+  createdAt: {
     type: Date,
     default: Date.now,
+    immutable: true,
   },
   verified: {
     type: Boolean,
