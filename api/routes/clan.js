@@ -23,6 +23,24 @@ router.get('/:tag', verifyToken, async (req, res) => {
   }
 });
 
+router.get('/:tag/members', verifyToken, async (req, res) => {
+  const tag = req.params.tag;
+
+  try {
+    const clan = await Clan.findOne({ tag: tag }).populate('members');
+
+    if(clan) {
+      res.send(clan.members)
+    } 
+    else {
+      res.send("Clan is not registered. A leader need to register the clan to start managing it.")
+    }
+    
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 router.post('/register', verifyToken, async (req, res) => {
   try {
     // Validate request body, return error message if validation fails
