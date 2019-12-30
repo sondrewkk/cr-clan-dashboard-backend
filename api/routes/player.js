@@ -24,19 +24,30 @@ router.get('/:tag', verifyToken, async (req, res) => {
       res.send(player); 
     } 
     else {
-      const newPlayerData = await client.Users.getProfile(tag);
-      const newPlayer = new Player(newPlayerData);
-
-      newPlayer.created = Date.now();
-      newPlayer.modified = Date.now();
-      
-      await newPlayer.save();
-
-      res.send(newPlayer);
+      res.status(400).send('Player does not exist');
     }
   } catch (err) {
     console.error(err);
   }
+});
+
+router.post('/', verifyToken, async (req, res) => {
+  const tag = req.body.tag;
+  const player = await Player.findOne({tag: tag});
+
+  if(player) {
+    res.status(204).send('Player does already exist');
+  }
+
+  const newPlayerData = await client.Users.getProfile(tag);
+  const newPlayer = new Player(newPlayerData);
+
+  newPlayer.created = Date.now();
+  newPlayer.modified = Date.now();
+  
+  await newPlayer.save();
+
+  res.status(201).send(newPlayer._id);
 });
 
 router.get('/:tag/chests', verifyToken, async (req, res) => {
