@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  role: {
+    type: String,
+    default: 'User',
+  },
   playerProfile: {
     type: ObjectId,
     ref: 'Player', 

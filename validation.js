@@ -19,6 +19,15 @@ const loginValidation = (data) => {
   return Joi.validate(data, schema);
 };
 
+const verifyValidation = (data) => {
+  const schema = {
+    id: Joi.string().required(),
+    tag: Joi.string().required()
+  };
+
+  return Joi.validate(data, schema);
+}
+
 const createClanValidation = (data) => {
   const schema = {
     tag: Joi.string().required(),
@@ -28,7 +37,10 @@ const createClanValidation = (data) => {
   return Joi.validate(data, schema);
 };
 
-module.exports.registerValidation = registerValidation;
-module.exports.loginValidation = loginValidation;
-module.exports.createClanValidation = createClanValidation;
+module.exports = {
+  registerValidation,
+  loginValidation,
+  verifyValidation,
+  createClanValidation
+};
 

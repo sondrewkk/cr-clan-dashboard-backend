@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const _ = require('lodash');
+const errorHandler = require('./middleware/errorHandler');
 
 // Configuration
 //dotenv.config();
@@ -29,20 +30,20 @@ app.use((req, res, next) => {
 });
 
 // API
-const userEndpoints = require('./api/routes/user');
-const playerEndpoints = require('./api/routes/player');
-const clanEndpoints = require('./api/routes/clan');
+//const playerEndpoints = require('./api/routes/player');
+//const clanEndpoints = require('./api/routes/clan');
 
-app.use('/api/user', userEndpoints);
-app.use('/api/player', playerEndpoints);
-app.use('/api/clan', clanEndpoints);
+app.use('/api/user', require('./user/user.controller'));
+//app.use('/api/player', playerEndpoints);
+//app.use('/api/clan', clanEndpoints);
 
+app.use(errorHandler);
 // 404 handling
-app.use(function(req, res, next) {
-  const err = new Error('Not Found');
-  err.status = 404;
-  res.json(err);
-});
+// app.use(function(req, res, next) {
+//   const err = new Error('Not Found');
+//   err.status = 404;
+//   res.json(err);
+// });
 
 // Connect to db
 mongoose.connect(process.env.DB_CONNECT, {useNewUrlParser: true});
