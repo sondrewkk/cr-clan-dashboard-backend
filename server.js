@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 //const clanEndpoints = require('./api/routes/clan');
 
 app.use('/api/user', require('./user/user.controller'));
-//app.use('/api/player', playerEndpoints);
+app.use('/api/player', require('./player/player.controller'));
 //app.use('/api/clan', clanEndpoints);
 
 app.use(errorHandler);
