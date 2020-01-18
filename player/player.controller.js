@@ -13,7 +13,7 @@ module.exports = router;
 // API Controllers
 async function getPlayer(req, res, next) {
   try {
-    const player = playerSerivce.getPlayer(req.params.tag);
+    const player = await playerSerivce.getPlayer(req.params.tag);
 
     if(player) {
       res.json(player);
