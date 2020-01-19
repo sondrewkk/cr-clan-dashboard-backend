@@ -44,10 +44,10 @@ async function register(req, res, next) {
 
 async function verify(req, res, next) {
   try {
-    const user = await userSerivce.verify(req.body);
+    const verificationInfo = await userSerivce.verify(req.body);
 
-    if(userId) {
-      res.json(user);
+    if(verificationInfo) {
+      res.json(verificationInfo);
     }
     else {
       res.status(400).json({message: 'Verify user failed'});

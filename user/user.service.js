@@ -3,11 +3,14 @@ const User = require('../models/user');
 const Player = require('../models/player');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const Role = require('../_helpers/role');
+const Client = require('../client');
 const {registerValidation, loginValidation, verifyValidation} = require('../validation');
 
 module.exports = {
   authenticate,
-  register
+  register,
+  verify
 };
 
 async function authenticate({ email, password }) {
@@ -37,7 +40,14 @@ async function authenticate({ email, password }) {
   const token = jwt.sign({sub: user._id, role: user.role}, process.env.TOKEN_SECRET);
   const { verified, _id, playerProfile } = user;
 
-  return { verified, _id, playerProfile, token};
+  let tag = null;
+
+  if(user.playerProfile !== null) {
+    const player = await Player.findById(playerProfile)
+    tag = player.tag;
+  }
+  
+  return { verified, _id, tag, token};
 }  
 
 async function register(data) {
@@ -106,33 +116,36 @@ async function verify(data) {
     if (!player) {
 
       // Get player data from royale api and create player object
-      const newPlayerData = await client.Users.getProfile(tag);
+      const newPlayerData = await Client.Users.getProfile(tag);
       const newPlayer = new Player(newPlayerData);
       
       // Save player
       await newPlayer.save();
+
+      // Link player profile to the user
+      user.playerProfile = newPlayer._id;
+
+      // When player is created or already exist set verified to true 
+      user.verified = true; 
+
+      // Set user role to player role if user is not admin
+      if(Role[user.role] !== Role.Admin) {
+        user.role = newPlayer.clan.role;
+      }
+      
+      // Save user
+      await user.save();
     }
-
-    // When player is created or already exist set verified to true 
-    user.verified = true; 
-
-    // Link player profile to the user
-    user.playerProfile = player._id;
-
-    // Set user role to player role if user is not admin
-    if(user.role !== 'Admin') {
-      user.role = playerProfile.role;
+    else {
+      throw new Error('Player is already added to database');
     }
-    
-    // Save user
-    await user.save();
   }
   else {
     throw new Error('User id does not exist');
   }
-
+  
   // Extract properties to return
-  const { _id, verified, role } = user;
+  const { verified, role, playerProfile } = user;
 
-  return { _id, verified, role };
+  return { tag, role, playerProfile, verified };
 }
