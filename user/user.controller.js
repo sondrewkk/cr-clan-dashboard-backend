@@ -2,6 +2,7 @@
 const router = require('express').Router();
 const authorize = require('../middleware/authorize');
 const userSerivce = require('./user.service');
+const Role = require('../_helpers/role');
 
 // API routes
 router.post('/login', login);

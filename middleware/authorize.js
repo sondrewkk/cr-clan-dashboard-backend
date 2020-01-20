@@ -10,7 +10,7 @@ function authorize(role) {
     // authorize based on user role. user.role can not be less that role to get authorized
     (req, res, next) => {
       if (Role[req.user.role] < role) {
-        return res.status(401).json({message: 'Unauthorized'});
+        return res.status(401).json({message: 'Not enough permissions. Role: ' + Role.toString(req.user.role)});
       }
 
       // authentication and authorization successful
