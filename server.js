@@ -30,12 +30,9 @@ app.use((req, res, next) => {
 });
 
 // API
-//const playerEndpoints = require('./api/routes/player');
-//const clanEndpoints = require('./api/routes/clan');
-
 app.use('/api/user', require('./user/user.controller'));
 app.use('/api/player', require('./player/player.controller'));
-//app.use('/api/clan', clanEndpoints);
+app.use('/api/clan', require('./clan/clan.controller'));
 
 app.use(errorHandler);
 // 404 handling
