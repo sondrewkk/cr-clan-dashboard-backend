@@ -1,21 +1,15 @@
 const jwt = require('express-jwt');
+const Role = require('../_helpers/role');
 
-function authorize(roles = []) {
+function authorize(role) {
   
-  // roles param can be a single role string (e.g. Role.User or 'User') 
-  // or an array of roles (e.g. [Role.Admin, Role.User] or ['Admin', 'User'])
-  if(typeof roles === 'string') {
-    roles = [roles];
-  }
-
-
   return [
     // authenticate JWT token and attach user to request object (req.user)
     jwt({ secret: process.env.TOKEN_SECRET }),
 
-    // authorize based on user role
+    // authorize based on user role. user.role can not be less that role to get authorized
     (req, res, next) => {
-      if (roles.length && !roles.includes(req.user.role)) {
+      if (Role[req.user.role] < role) {
         return res.status(401).json({message: 'Unauthorized'});
       }
 

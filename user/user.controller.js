@@ -6,7 +6,7 @@ const userSerivce = require('./user.service');
 // API routes
 router.post('/login', login);
 router.post('/register', register);
-router.post('/verify', authorize(), verify);
+router.post('/verify', authorize(Role.User), verify);
 module.exports = router;
 
 // API Controllers

@@ -130,7 +130,7 @@ async function verify(data) {
 
       // Set user role to player role if user is not admin
       if(Role[user.role] !== Role.Admin) {
-        user.role = newPlayer.clan.role;
+        user.role = Role.uppercaseFirstLetter(newPlayer.clan.role);
       }
       
       // Save user
