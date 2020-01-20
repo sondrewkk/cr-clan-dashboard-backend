@@ -146,6 +146,14 @@ async function verify(data) {
   
   // Extract properties to return
   const { verified, role, playerProfile } = user;
+  let token = null;
+  
+  // Need to create a new token when verified since role has changed from User to an ingame role
+  if(verified) {
+    
+    // Create token and extract properties to return
+    token = jwt.sign({sub: user._id, role: user.role}, process.env.TOKEN_SECRET);
+  }
 
-  return { tag, role, playerProfile, verified };
+  return { tag, role, playerProfile, verified, token };
 }
