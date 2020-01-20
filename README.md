@@ -83,5 +83,37 @@
   ### Response
   https://docs.royaleapi.com/json/player_8L9L9GL.json
   </dd>
+
+  <br>
+  <br>
+
+  <dt><h2>Verify user</h2></dt>
+  <dd>
+  This endpoint is setting the user verified field to true and store the new value in the database. This means that the user has entered his ingame player tag to connect his account to the application
+
+  ### HTTP request
+  ```
+  POST http://crdashboard/api/user/verify
+  ```
+  ### Body
+  ```json 
+  {
+    "id": "5d4ca07b9a19b52ed0afbbc5"
+  }
+  ```
+
+  ### Response
+  ```json
+  {
+    "success": "true",
+    "message": "Verified",
+    "id": "5d4ca07b9a19b52ed0afbbc5",
+    "verified": "true"
+  }
+  ```
+  </dd>
+
+  <br>
+  <br>
 </dl>
   
