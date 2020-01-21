@@ -38,7 +38,7 @@ async function authenticate({ email, password }) {
 
   // Create token and extract properties to return
   const token = jwt.sign({sub: user._id, role: user.role}, process.env.TOKEN_SECRET);
-  const { verified, _id, playerProfile } = user;
+  const { verified, _id, playerProfile, role } = user;
 
   let tag = null;
 
@@ -47,7 +47,7 @@ async function authenticate({ email, password }) {
     tag = player.tag;
   }
   
-  return { verified, _id, tag, token};
+  return { verified, _id, tag, token, role };
 }  
 
 async function register(data) {
