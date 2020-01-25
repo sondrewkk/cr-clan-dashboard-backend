@@ -1,41 +1,53 @@
 const client = require('../client');
 const Clan = require('../models/clan');
 const ClanMember = require('../models/clanMember');
-const {createClanValidation} = require('../validation');
+const { createClanValidation } = require('../validation');
 
 module.exports = {
   getClan,
   getMembers,
-  register
-}
+  register,
+};
 
+/**
+ * 
+ * @param {*} tag 
+ */
 async function getClan(tag) {
   const clan = await Clan.findOne({ tag: tag });
 
-  if(clan) {
+  if (clan) {
     return clan;
   } 
   else {
-    throw new Error("Clan is not registered. A leader need to register the clan to start managing it.");
+    throw new Error('Clan is not registered. A leader need to register the clan to start managing it.');
   }
 }
 
+/**
+ * 
+ * @param {*} tag 
+ */
 async function getMembers(tag) {
   const clan = await Clan.findOne({ tag: tag }).populate('members');
 
-  if(clan) {
+  if (clan) {
     return clan.members;
   } 
   else {
-    throw new Error("Clan is not registered. A leader need to register the clan to start managing it.");
+    throw new Error('Clan is not registered. A leader need to register the clan to start managing it.');
   }
 }
 
+/**
+ * 
+ * @param {*} data 
+ */
 async function register(data) {
   // Validate request body, return error message if validation fails
-  const {error} = createClanValidation(data);
+  const { error } = createClanValidation(data);
 
-  if(error) {
+  if (error) {
     throw new Error(error.details[0].message);
   }
 
@@ -45,11 +57,10 @@ async function register(data) {
   const clan = await Clan.findOne({ tag: tag });
 
   // Give a feedback message if it exist
-  if(clan) {
-    throw new Error("Clan already created")
+  if (clan) {
+    throw new Error('Clan already created');
   } 
   else {
-
     // Fetch clan data, put members in a separate object to pass
     // mongoose validation
     const newClanData = await client.Clans.getData(tag);
@@ -62,14 +73,15 @@ async function register(data) {
 
     // For each member create a clan member and save it to database
     // before adding the member to the clan
-    for(memberData in newClanMembers)
-    {
-      const member = new ClanMember(newClanMembers[memberData]);   
-      member.clanTag = newClan.tag;
-
-      await member.save();
-      
-      newClan.members.push(member._id);
+    for (memberData in newClanMembers) {
+      if (memberData != null) {
+        const member = new ClanMember(newClanMembers[memberData]);   
+        member.clanTag = newClan.tag;
+  
+        await member.save();
+        
+        newClan.members.push(member._id);
+      }
     }
 
     // Save clan with members

@@ -8,18 +8,25 @@ const Role = require('../_helpers/role');
 router.get('/:tag', authorize(Role.Member), getPlayer);
 router.post('/', authorize(Role.User), createPlayer);
 router.get('/:tag/chests', authorize(Role.Member), getPlayerChests);
+
 module.exports = router;
 
 // API Controllers
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 async function getPlayer(req, res, next) {
   try {
     const player = await playerSerivce.getPlayer(req.params.tag);
 
-    if(player) {
+    if (player) {
       res.json(player);
     } 
     else {
-      res.status(400).json({message: 'Player could not be found'});
+      res.status(400).json({ message: 'Player could not be found' });
     }
   } 
   catch (err) {
@@ -27,15 +34,21 @@ async function getPlayer(req, res, next) {
   }
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 async function createPlayer(req, res, next) {
   try {
     const playerId = await playerSerivce.createPlayer(req.body.tag);
 
-    if(playerId) {
+    if (playerId) {
       res.json({ playerId });
     } 
     else {
-      res.status(400).json({ message: 'Could not create player. Check tag.'})
+      res.status(400).json({ message: 'Could not create player. Check tag.' });
     }
   } 
   catch (err) {
@@ -43,15 +56,21 @@ async function createPlayer(req, res, next) {
   }
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 async function getPlayerChests(req, res, next) {
   try {
     const chests = await playerSerivce.getPlayerChests(req.params.tag);
 
-    if(chests) {
+    if (chests) {
       res.json(chests);
     }
     else {
-      res.status(400).json({ message: 'Could not get player chests. Check tag.'});
+      res.status(400).json({ message: 'Could not get player chests. Check tag.' });
     }
   } 
   catch (err) {

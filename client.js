@@ -1,4 +1,4 @@
-const {Client} = require('croyale');
+const { Client } = require('croyale');
 
 const client = new Client(process.env.API_TOKEN);
 

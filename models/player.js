@@ -9,7 +9,7 @@ const playerSchema = new mongoose.Schema({
     id: { type: Number },
     name: { type: String },
     arena: { type: String },
-    trophyLimit: { type: Number }
+    trophyLimit: { type: Number },
   },
   clan: 
   {
@@ -18,7 +18,7 @@ const playerSchema = new mongoose.Schema({
     role: { type: String },
     donations: { type: Number },
     donationsReceived: { type: Number },
-    donationsDelta: { type: Number }
+    donationsDelta: { type: Number },
   },
   stats: 
   {
@@ -30,7 +30,7 @@ const playerSchema = new mongoose.Schema({
     totalDonations: { type: Number },
     challengeMaxWins: { type: Number },
     challengeCardsWon: { type: Number },
-    level: { type: Number }
+    level: { type: Number },
   },
   games: 
   {
@@ -42,30 +42,30 @@ const playerSchema = new mongoose.Schema({
     losses: { type: Number },
     lossesPercent: { type: Number },
     draws: { type: Number },
-    drawsPercent: { type: Number }
+    drawsPercent: { type: Number },
   },
   leagueStatistics: 
   {
     currentSeason: {
       trophies: { type: Number },
-      bestTrophies: { type: Number }
+      bestTrophies: { type: Number },
     },
     previousSeason: 
     {
       id: { type: String },
       trophies: { type: Number },
-      bestTrophies: { type: Number }
+      bestTrophies: { type: Number },
     },
     bestSeason: 
     {
       id: { type: String },
       rank: { type: Number },
-      trophies: { type: Number }
-    }
+      trophies: { type: Number },
+    },
   },
   deckLink: { type: String },
   _cacheTime: { type: Number },
-  createdAt: { type: Date , default: Date.now, immutable: true },
+  createdAt: { type: Date, default: Date.now, immutable: true },
   modified: { type: Date, default: Date.now },
 });
 

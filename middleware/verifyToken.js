@@ -10,10 +10,12 @@ module.exports = function(req, res, next) {
       const verified = jwt.verify(token, process.env.TOKEN_SECRET);
       req.user = verified;
       next();
-    } catch (err) {
+    } 
+    catch (err) {
       res.status(400).send('Invalid token');
     }
-  } else {
+  } 
+  else {
     return res.status(401).send('Bearer token is not supplied');
   }
 };

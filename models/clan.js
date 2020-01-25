@@ -18,15 +18,15 @@ const clanSchema = new mongoose.Schema({
   location: {
     name: { type: String },
     isCountry: { type: Boolean },
-    code: { type: String }
+    code: { type: String },
   },
-  members: [{ type: ObjectId, ref: 'ClanMember'}],
+  members: [{ type: ObjectId, ref: 'ClanMember' }],
   tracking: {
     active: { type: Boolean },
     legible: { type: Boolean },
     available: { type: Boolean },
-    snapshotCount: { type: Number }
-  }
+    snapshotCount: { type: Number },
+  },
 });
 
 module.exports = mongoose.model('Clan', clanSchema);

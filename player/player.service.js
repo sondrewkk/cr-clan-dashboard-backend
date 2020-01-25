@@ -4,25 +4,26 @@ const Player = require('../models/player');
 module.exports = {
   getPlayer,
   createPlayer,
-  getPlayerChests
-}
+  getPlayerChests,
+};
 
+/**
+ * 
+ * @param {*} tag 
+ */
 async function getPlayer(tag) {
-
   // Verify tag?
 
   // Get player from db
-  let player = await Player.findOne({tag: tag});
+  const player = await Player.findOne({ tag: tag });
 
   // If the player exist
-  if(player) {
-
+  if (player) {
     // Calculate cached time to determine if player date need to be updated
     const timeLeftBeforeUpdate = player._cacheTime - Date.now();
     
     // Update player if cachetime has run out
-    if(timeLeftBeforeUpdate <= 0){
-
+    if (timeLeftBeforeUpdate <= 0) {
       // Get player data from royale api
       const newPlayerData = await client.Users.getProfile(tag);
       
@@ -44,13 +45,16 @@ async function getPlayer(tag) {
   }
 }
 
+/**
+ * 
+ * @param {*} tag 
+ */
 async function createPlayer(tag) {
-
   // Get player for db
-  const player = await Player.findOne({tag: tag});
+  const player = await Player.findOne({ tag: tag });
 
   // Throw error if player already exist
-  if(player) {
+  if (player) {
     throw new Error('Player does already exist');
   }
 
@@ -64,8 +68,11 @@ async function createPlayer(tag) {
   return newPlayer._id;
 }
 
+/**
+ * 
+ * @param {*} tag 
+ */
 async function getPlayerChests(tag) {
-
   // Get chest from royale api
   const chests = await client.Users.getChests(tag);
   

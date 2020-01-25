@@ -11,15 +11,22 @@ router.post('/verify', authorize(Role.User), verify);
 module.exports = router;
 
 // API Controllers
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 async function login(req, res, next) {
   try {
     const user = await userSerivce.authenticate(req.body);
 
-    if(user) {
+    if (user) {
       res.json(user);
     } 
     else {
-      res.status(400).json({message: 'Login failed'});
+      res.status(400).json({ message: 'Login failed' });
     }
   } 
   catch (err) {
@@ -27,15 +34,21 @@ async function login(req, res, next) {
   }
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 async function register(req, res, next) {
   try {
     const userId = await userSerivce.register(req.body);
 
-    if(userId) {
+    if (userId) {
       res.json(userId);
     }
     else {
-      res.status(400).json({message: 'Register user failed'});
+      res.status(400).json({ message: 'Register user failed' });
     }
   } 
   catch (err) {
@@ -43,15 +56,21 @@ async function register(req, res, next) {
   }
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 async function verify(req, res, next) {
   try {
     const verificationInfo = await userSerivce.verify(req.body);
 
-    if(verificationInfo) {
+    if (verificationInfo) {
       res.json(verificationInfo);
     }
     else {
-      res.status(400).json({message: 'Verify user failed'});
+      res.status(400).json({ message: 'Verify user failed' });
     }
   } 
   catch (err) {

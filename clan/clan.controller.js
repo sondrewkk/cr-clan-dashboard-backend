@@ -12,15 +12,22 @@ router.post('/register', authorize(Role.Leader), registerClan);
 module.exports = router;
 
 // API Controllers
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 async function getClan(req, res, next) {
   try {
     const clan = await clanService.getClan(req.params.tag);
 
-    if(clan) {
+    if (clan) {
       res.json(clan);
     } 
     else {
-      res.status(400).json({message: 'Clan could not be found'});
+      res.status(400).json({ message: 'Clan could not be found' });
     }
   } 
   catch (err) {
@@ -28,15 +35,21 @@ async function getClan(req, res, next) {
   }
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 async function getMembers(req, res, next) {
   try {
     const members = await clanService.getMembers(req.params.tag);
 
-    if(members) {
+    if (members) {
       res.json(members);
     } 
     else {
-      res.status(400).json({message: 'No members found'});
+      res.status(400).json({ message: 'No members found' });
     }
   } 
   catch (err) {
@@ -44,15 +57,21 @@ async function getMembers(req, res, next) {
   }
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 async function registerClan(req, res, next) {
   try {
     const clanId = await clanService.register(req.body);
 
-    if(clanId) {
+    if (clanId) {
       res.json(clanId);
     } 
     else {
-      res.status(400).json({message: 'Clan could not be registered'});
+      res.status(400).json({ message: 'Clan could not be registered' });
     }
   } 
   catch (err) {

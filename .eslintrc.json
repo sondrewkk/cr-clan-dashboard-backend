@@ -17,6 +17,9 @@
     "rules": {
         "linebreak-style": ["error", "unix"],
         "new-cap": "off",
-        "no-trailing-spaces": "off"
+        "no-trailing-spaces": "off",
+        "max-len": ["error", {"ignoreStrings": true, "ignoreComments": true, "code": 100}],
+        "brace-style": ["error", "stroustrup"],
+        "object-curly-spacing": ["error", "always"]
     }
 }

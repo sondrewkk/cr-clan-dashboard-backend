@@ -5,25 +5,28 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Role = require('../_helpers/role');
 const Client = require('../client');
-const {registerValidation, loginValidation, verifyValidation} = require('../validation');
+const { registerValidation, loginValidation, verifyValidation } = require('../validation');
 
 module.exports = {
   authenticate,
   register,
-  verify
+  verify,
 };
 
+/**
+ * 
+ * @param {*} param0 
+ */
 async function authenticate({ email, password }) {
-
   // Validate input
-  const {error} = loginValidation({ email, password });
+  const { error } = loginValidation({ email, password });
   
   if (error) {
     throw new Error(error.details[0].message);
   }
 
   // Get user from db
-  const user = await User.findOne({email: email});
+  const user = await User.findOne({ email: email });
     
   if (!user) {
     throw new Error('Email is not found');
@@ -37,23 +40,27 @@ async function authenticate({ email, password }) {
   }
 
   // Create token and extract properties to return
-  const token = jwt.sign({sub: user._id, role: user.role}, process.env.TOKEN_SECRET);
+  const token = jwt.sign({ sub: user._id, role: user.role }, process.env.TOKEN_SECRET);
+
   const { verified, _id, playerProfile } = user;
 
   let tag = null;
 
-  if(user.playerProfile !== null) {
-    const player = await Player.findById(playerProfile)
+  if (user.playerProfile !== null) {
+    const player = await Player.findById(playerProfile);
     tag = player.tag;
   }
   
-  return { verified, _id, tag, token};
+  return { verified, _id, tag, token };
 }  
 
+/**
+ * 
+ * @param {*} data 
+ */
 async function register(data) {
-
   // Validate input
-  const {error} = registerValidation(data);
+  const { error } = registerValidation(data);
 
   if (error) {
     throw new Error(error.details[0].message);
@@ -63,7 +70,7 @@ async function register(data) {
   const { name, email, password } = data;
 
   // Check if user is already in the db
-  const emailExist = await User.findOne({email: email});
+  const emailExist = await User.findOne({ email: email });
 
   if (emailExist) {
     throw new Error('Email already exist');
@@ -86,35 +93,36 @@ async function register(data) {
   return user._id;
 }
 
+/**
+ * 
+ * @param {*} data 
+ */
 async function verify(data) {
-
   // Validate input
-  const {error} = verifyValidation(data);
+  const { error } = verifyValidation(data);
 
   if (error) {
     throw new Error(error.details[0].message);
   }
 
   // Extract id and tag
-  const { id, tag } = data;
+  const { id, tag } = data;
 
   // Find user in db
-  const user = await User.findOne({_id: id});
+  const user = await User.findOne({ _id: id });
 
   // If the user is found the verify process can proceed
-  if(user) {
-
+  if (user) {
     // If the user is already verified throw an error
-    if(user.verified) {
+    if (user.verified) {
       throw new Error('User is already verified');
     }
 
     // Check id player exist in db
-    const player = await Player.findOne({ tag: tag })
+    const player = await Player.findOne({ tag: tag });
 
     // If not create player
     if (!player) {
-
       // Get player data from royale api and create player object
       const newPlayerData = await Client.Users.getProfile(tag);
       const newPlayer = new Player(newPlayerData);
@@ -129,7 +137,7 @@ async function verify(data) {
       user.verified = true; 
 
       // Set user role to player role if user is not admin
-      if(Role[user.role] !== Role.Admin) {
+      if (Role[user.role] !== Role.Admin) {
         user.role = Role.uppercaseFirstLetter(newPlayer.clan.role);
       }
       
@@ -149,10 +157,9 @@ async function verify(data) {
   let token = null;
   
   // Need to create a new token when verified since role has changed from User to an ingame role
-  if(verified) {
-    
+  if (verified) {
     // Create token and extract properties to return
-    token = jwt.sign({sub: user._id, role: user.role}, process.env.TOKEN_SECRET);
+    token = jwt.sign({ sub: user._id, role: user.role }, process.env.TOKEN_SECRET);
   }
 
   return { tag, role, playerProfile, verified, token };

@@ -22,11 +22,11 @@ const loginValidation = (data) => {
 const verifyValidation = (data) => {
   const schema = {
     id: Joi.string().required(),
-    tag: Joi.string().required()
+    tag: Joi.string().required(),
   };
 
   return Joi.validate(data, schema);
-}
+};
 
 const createClanValidation = (data) => {
   const schema = {
@@ -41,6 +41,6 @@ module.exports = {
   registerValidation,
   loginValidation,
   verifyValidation,
-  createClanValidation
+  createClanValidation,
 };
 

@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-//const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -9,7 +8,6 @@ const _ = require('lodash');
 const errorHandler = require('./middleware/errorHandler');
 
 // Configuration
-//dotenv.config();
 app.set('port', (process.env.PORT || 8081));
 
 
@@ -20,7 +18,7 @@ app.use(cors({
 }));
 
 app.use(morgan('dev')); 
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
   if (!_.isEmpty(req.body)) {
@@ -43,7 +41,7 @@ app.use(errorHandler);
 // });
 
 // Connect to db
-mongoose.connect(process.env.DB_CONNECT, {useNewUrlParser: true});
+mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true });
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
